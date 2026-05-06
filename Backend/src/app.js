@@ -26,6 +26,20 @@ const interviewRouter = require("./routes/interview.routes")
 app.use("/api/auth", authRouter)
 app.use("/api/interview", interviewRouter)
 
+// Root route handler
+app.get("/", (req, res) => {
+  res.json({
+    message: "PrepAI Backend API",
+    version: "1.0.1",
+    status: "running",
+    endpoints: {
+      health: "/api/health",
+      auth: "/api/auth",
+      interview: "/api/interview"
+    }
+  })
+})
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err)

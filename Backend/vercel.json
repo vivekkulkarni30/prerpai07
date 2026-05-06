@@ -3,20 +3,14 @@
   "devCommand": "npm run dev",
   "version": 2,
   "functions": {
-    "api/**/*.js": {
+    "api/index.js": {
       "memory": 1024,
       "maxDuration": 10
     }
   },
   "env": {
     "NODE_ENV": "production"
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
-    }
-  ]
+  }
 }
 
 

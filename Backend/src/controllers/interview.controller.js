@@ -1,6 +1,32 @@
-const pdfParse = require("pdf-parse")
+const * as pdfjsLib = require("pdfjs-dist")
 const { generateInterviewReport, generateResume } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
+
+// Configure PDF.js for Node.js
+pdfjsLib.GlobalWorkerOptions.workerSrc = require.resolve("pdfjs-dist/build/pdf.worker.js")
+
+// Function to extract text from PDF buffer
+async function extractTextFromPDF(buffer) {
+  try {
+    const data = new Uint8Array(buffer)
+    const loadingTask = pdfjsLib.getDocument({ data })
+    const pdf = await loadingTask.promise
+
+    let fullText = ''
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum)
+      const textContent = await page.getTextContent()
+      const pageText = textContent.items.map(item => item.str).join(' ')
+      fullText += pageText + '\n'
+    }
+
+    return { text: fullText.trim() }
+  } catch (error) {
+    console.error('Error extracting PDF text:', error)
+    throw new Error('Failed to extract text from PDF')
+  }
+}
 
 
 
@@ -10,7 +36,7 @@ const interviewReportModel = require("../models/interviewReport.model")
  */
 async function generateInterViewReportController(req, res) {
 
-    const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
+    const resumeContent = await extractTextFromPDF(req.file.buffer)
     const { selfDescription, jobDescription } = req.body
 
     const interViewReportByAi = await generateInterviewReport({
