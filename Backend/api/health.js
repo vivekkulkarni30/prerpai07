@@ -1,7 +1,7 @@
 module.exports = (req, res) => {
   try {
     res.status(200).json({
-      status: "ok",
+      status: "fine",
       message: "Backend is running on Vercel",
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV || "production"
