@@ -1,4 +1,4 @@
-const * as pdfjsLib = require("pdfjs-dist")
+const pdfjsLib = require("pdfjs-dist")
 const { generateInterviewReport, generateResume } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
 
