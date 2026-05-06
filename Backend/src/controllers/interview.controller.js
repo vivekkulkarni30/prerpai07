@@ -1,5 +1,5 @@
 const pdfParse = require("pdf-parse")
-const { generateInterviewReport, generateResumePdf } = require("../services/ai.service")
+const { generateInterviewReport, generateResume } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
 
 
@@ -70,7 +70,8 @@ async function getAllInterviewReportsController(req, res) {
 
 
 /**
- * @description Controller to generate resume PDF based on user self description, resume and job description.
+ * @description Controller to generate resume HTML based on user self description, resume and job description.
+ * Frontend will convert to PDF using html2pdf.js library
  */
 async function generateResumePdfController(req, res) {
     const { interviewReportId } = req.params
@@ -85,14 +86,15 @@ async function generateResumePdfController(req, res) {
 
     const { resume, jobDescription, selfDescription } = interviewReport
 
-    const pdfBuffer = await generateResumePdf({ resume, jobDescription, selfDescription })
+    const resumeData = await generateResume({ resume, jobDescription, selfDescription })
 
-    res.set({
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename=resume_${interviewReportId}.pdf`
+    // Return HTML content - frontend will convert to PDF using html2pdf.js
+    res.status(200).json({
+        message: "Resume HTML generated successfully.",
+        html: resumeData.html,
+        format: "html",
+        interviewReportId
     })
-
-    res.send(pdfBuffer)
 }
 
 module.exports = { generateInterViewReportController, getInterviewReportByIdController, getAllInterviewReportsController, generateResumePdfController }
