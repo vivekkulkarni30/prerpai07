@@ -2,8 +2,8 @@ const pdfjsLib = require("pdfjs-dist")
 const { generateInterviewReport, generateResume } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
 
-// Configure PDF.js for Node.js
-pdfjsLib.GlobalWorkerOptions.workerSrc = require.resolve("pdfjs-dist/build/pdf.worker.js")
+// Configure PDF.js for Node.js - use the legacy build
+pdfjsLib.GlobalWorkerOptions.workerSrc = require.resolve("pdfjs-dist/legacy/build/pdf.worker.mjs")
 
 // Function to extract text from PDF buffer
 async function extractTextFromPDF(buffer) {

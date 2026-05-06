@@ -13,11 +13,10 @@ async function connectToDB() {
       maxPoolSize: 3,
       minPoolSize: 1,
       maxIdleTimeMS: 20000,
-      serverSelectionTimeoutMS: 5000,      // 5 second timeout
-      socketTimeoutMS: 5000,               // 5 second socket timeout
-      connectionTimeoutMS: 5000,           // 5 second connection timeout
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 5000,
       retryWrites: true,
-      family: 4,                           // Use IPv4
+      family: 4,
       appName: "PrepAI-Backend"
     }
 
