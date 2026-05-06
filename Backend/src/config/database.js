@@ -8,18 +8,20 @@ async function connectToDB() {
       return
     }
 
-    // Connection options optimized for serverless
+    // Connection options optimized for serverless free tier (10s limit)
     const mongooseOptions = {
-      maxPoolSize: 5,
-      minPoolSize: 2,
-      maxIdleTimeMS: 30000,
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 30000,
-      connectionTimeoutMS: 10000,
+      maxPoolSize: 3,
+      minPoolSize: 1,
+      maxIdleTimeMS: 20000,
+      serverSelectionTimeoutMS: 5000,      // 5 second timeout
+      socketTimeoutMS: 5000,               // 5 second socket timeout
+      connectionTimeoutMS: 5000,           // 5 second connection timeout
       retryWrites: true,
-      family: 4 // Use IPv4
+      family: 4,                           // Use IPv4
+      appName: "PrepAI-Backend"
     }
 
+    console.log("🔗 Connecting to MongoDB with timeouts: 5s each...")
     await mongoose.connect(process.env.MONGO_URI, mongooseOptions)
     console.log("✓ Connected to Database successfully")
     
